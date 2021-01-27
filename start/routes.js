@@ -17,8 +17,8 @@
 const Route = use("Route")
 
 // User
-Route.post("v1/user", "UserController.create")
-Route.get("v1/user", "UserController.index")
+Route.post("v1/users", "UserController.create")
+Route.get("v1/users", "UserController.index")
 
 // Session 
 Route.post("v1/sessions", "SessionController.create")
@@ -29,6 +29,8 @@ Route.post("v1/sessions", "SessionController.create")
     .middleware("auth") */
 
 Route.post("v1/contents", "ContentController.store")
+Route.get("v1/contents", "ContentController.index")
+
 
 Route.post("v1/contents/:id/images", "ImageController.store")
     .middleware("auth")
