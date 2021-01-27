@@ -17,11 +17,11 @@
 const Route = use("Route")
 
 // User
-Route.post("v1/user","UserController.create" )
-
+Route.post("v1/user", "UserController.create")
+Route.get("v1/user", "UserController.index")
 
 // Session 
-Route.post("v1/sessions","SessionController.create")
+Route.post("v1/sessions", "SessionController.create")
 
 //Content
 /* Route.resource("contents","ContentController")
@@ -31,4 +31,4 @@ Route.post("v1/sessions","SessionController.create")
 Route.post("v1/contents", "ContentController.store")
 
 Route.post("v1/contents/:id/images", "ImageController.store")
-  .middleware("auth")
+    .middleware("auth")

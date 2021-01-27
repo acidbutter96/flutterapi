@@ -14,7 +14,7 @@ class ImageController {
         })
 
         const name = `${Date.now()}-${params.id}`
-        
+
         await image.move(Helpers.tmpPath("uploads"), {
             name: name
         })
@@ -23,9 +23,9 @@ class ImageController {
             return images.errors()
         }
 
-        if(image.moved()){
+        if (image.moved()) {
             const upload = content.image().create({ path: image.fileName, })
-            return response.json({error: false, upload: upload})
+            return response.json({ error: false, upload: upload })
         }
 
         return response.json({
