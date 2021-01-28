@@ -24,9 +24,9 @@ Route.get("v1/users", "UserController.index")
 Route.post("v1/sessions", "SessionController.create")
 
 //Content
-/* Route.resource("contents","ContentController")
+Route.resource("contents","ContentController")
     .apiOnly()
-    .middleware("auth") */
+    .middleware("auth")
 
 Route.post("v1/contents", "ContentController.store")
 Route.get("v1/contents", "ContentController.index")
