@@ -38,8 +38,9 @@ class ImageController {
                 return response.json({
                     error: false,
                     message: 'Image uploaded!',
-                    imgDb: imgDb
+                    imgDb: imgDbb
                 })
+
             }
 
             return response.send(imgDb)
