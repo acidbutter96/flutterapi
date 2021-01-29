@@ -16,11 +16,11 @@ class ImageController {
 
             const name = `${new Date().getTime()}_${Math.round((Math.random()) * 100)}.${imageUploaded.subtype}`
 
-            await imageUploaded.move(Helpers.publicPath('uploads/contents'), {
+            await imageUploaded.move(Helpers.publicPath('uploads/contents/'), {
                 name: name,
                 overwrite: true
             })
-            const path = `tmp/uploads/contents/${name}`
+            const path = `${name}`
 
             if (!imageUploaded.moved()) {
                 return response.status(400).json({
@@ -29,46 +29,25 @@ class ImageController {
                 })
             }
 
-            const imgDb = await Image.create({ path: path })
+            const imgDb = await Image.create({
+                path: path,
+                content_id: params.id
+            })
             if (imgDb) {
                 return response.json({
                     error: false,
                     message: 'Image uploaded!',
-                    imgDb:imgDb
+                    imgDb: imgDb
                 })
             }
 
             return response.send(imgDb)
         }
-        /* const content = await Content.findOrFail(params.id)
-
-        const image = request.file("image", {
-            types: ["image"],
-            size: "10mb"
-        })
-
-        const name = `${Date.now()}-${params.id}`
-        
-        await image.move(Helpers.tmpPath("uploads"), {
-            name: name
-        })
-
-        if (!image.moved()) {
-            return images.errors()
-        }
-
-        if(image.moved()){
-            const upload = content.image().create({ path: image.fileName, })
-            return response.json({error: false, upload: upload})
-        }
-
-        return response.json({
-            error: false
-        }) */
     }
 
-    async show({params,response}){
+    async show({ params, response }) {
         const path = params.filename
+        console.log(Helpers.publicPath())
         return response.download(Helpers.publicPath(`uploads/contents/${path}`))
     }
 }

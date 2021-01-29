@@ -11,8 +11,7 @@ class ContentSchema extends Schema {
       table.string("subtitle").notNullable()
       table.string("type")
       table.integer("likes")
-      table
-        .string("content")
+      table.string("content")
       table.timestamps()
     })
   }

@@ -6,7 +6,7 @@ const Model = use('Model')
 class Content extends Model {
 
     image (){
-        this.hasOne("App/Models/Image")
+        return this.hasOne("App/Models/Image")
     }
 
 }

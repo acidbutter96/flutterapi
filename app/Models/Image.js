@@ -7,7 +7,7 @@ const Env = use('Env')
 
 class Image extends Model {
     content() {
-        this.belongsTo('App/Models/Content')
+        return this.belongsTo('App/Models/Content')
     }
 
     static getUrl( path ) {
