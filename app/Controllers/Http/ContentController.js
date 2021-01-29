@@ -44,8 +44,6 @@ class ContentController {
    * @param {Response} ctx.response
    */
   async store({ request, response, auth }) {
-
-
     const data = request.only(["title", "subtitle", "type", "likes", "content"])
 
     const contents = await Content.create(data)
@@ -71,7 +69,6 @@ class ContentController {
    * @param {View} ctx.view
    */
   async show({ params }) {
-
     const contents = await Content.findOrFail(params.id)
     await contents.load("images")
 
@@ -99,6 +96,7 @@ class ContentController {
 
   async update({ params, request, response }) {
     const content = await Content.findOrFail(params.id)
+
     if (content) {
       const contentMerged = content.merge(request.body)
 
@@ -112,6 +110,7 @@ class ContentController {
         error: true,
         message: 'You must change any field'
       })
+
     }
 
     return response.status(400).json({

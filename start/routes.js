@@ -27,7 +27,6 @@ Route.put('v1/users/:id', 'UserController.update')
 Route.delete('v1/users/:id', 'UserController.delete')
   .middleware('auth')
 
-
 // Session 
 Route.post('v1/sessions', 'SessionController.create')
 Route.get('v1/sessions', 'SessionController.destroy')
@@ -44,5 +43,8 @@ Route.post('v1/contents', 'ContentController.store')
 Route.put('v1/contents/:id', 'ContentController.update')
   .middleware('auth')
 
+    //Content > Images
 Route.post('v1/contents/:id/images', 'ImageController.store')
+  .middleware('auth')
+  Route.get('v1/contents/images/:filename', 'ImageController.show')
   .middleware('auth')
