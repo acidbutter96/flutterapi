@@ -3,6 +3,7 @@
 const Image = use("App/Models/Image")
 const Content = use("App/Models/Content")
 const Helpers = use('Helpers')
+const fs = require('fs')
 
 class ImageController {
     async store({ params, request, response }) {
@@ -47,8 +48,23 @@ class ImageController {
 
     async show({ params, response }) {
         const path = params.filename
-        console.log(Helpers.publicPath())
         return response.download(Helpers.publicPath(`uploads/contents/${path}`))
+    }
+
+    async destroy({ params, response }) {
+        const path = params.filename
+        const imgId = await Image.query()
+            .where('path', path)
+            .delete()
+
+        fs.unlink(Helpers.publicPath(`uploads/contents/${path}`), (err) => {
+            if (err) {
+                return response.status(400).send(err)
+            }
+            return response.send('apagada')
+
+        })
+
     }
 }
 
