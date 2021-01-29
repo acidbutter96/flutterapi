@@ -47,4 +47,4 @@ Route.put('v1/contents/:id', 'ContentController.update')
 Route.post('v1/contents/:id/images', 'ImageController.store')
   .middleware('auth')
   Route.get('v1/contents/images/:filename', 'ImageController.show')
-  .middleware('auth')
+  /* .middleware('auth') */
