@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 
 /*
 |--------------------------------------------------------------------------
@@ -13,22 +13,27 @@
 |
 */
 
-/** @type {typeof import("@adonisjs/framework/src/Route/Manager")} */
-const Route = use("Route")
+/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
+const Route = use('Route')
 
 // User
-Route.post("v1/user","UserController.create" )
+Route.post('v1/users', 'UserController.create')
+Route.get('v1/users', 'UserController.index').middleware('auth')
+Route.get('v1/users/:id','UserController.show').middleware('auth')
+Route.put('v1/users/:id','UserController.update').middleware('auth')
+Route.delete('v1/users/:id','UserController.delete').middleware('auth')
 
 
 // Session 
-Route.post("v1/sessions","SessionController.create")
+Route.post('v1/sessions', 'SessionController.create')
+Route.get('v1/sessions','SessionController.destroy')
 
 //Content
-/* Route.resource("contents","ContentController")
-    .apiOnly()
-    .middleware("auth") */
+Route.resource('contents', 'ContentController')
+  .apiOnly()
+  .middleware('auth')
 
-Route.post("v1/contents", "ContentController.store")
+Route.post('v1/contents', 'ContentController.store')
 
-Route.post("v1/contents/:id/images", "ImageController.store")
-  .middleware("auth")
+Route.post('v1/contents/:id/images', 'ImageController.store')
+  .middleware('auth')

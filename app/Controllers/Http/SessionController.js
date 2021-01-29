@@ -7,6 +7,10 @@ class SessionController {
 
         return token
     }
+
+    async destrou({request,auth}){
+        return 'none'
+    }
 }
 
 module.exports = SessionController
