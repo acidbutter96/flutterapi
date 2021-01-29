@@ -6,6 +6,8 @@ const Helpers = use('Helpers')
 
 class ImageController {
     async store({ params, request, response }) {
+        
+        const content = await Content.findOrFail(params.id)
         /* const content = await Content.findOrFail(params.id)
 
         const image = request.file("image", {

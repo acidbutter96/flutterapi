@@ -19,7 +19,7 @@ class ContentController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index () {
+  async index() {
     const contents = await Content.all()
 
     return contents
@@ -43,8 +43,10 @@ class ContentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
-    const data = request.only(["title","subtitle","type","likes","content"])
+  async store({ request, response, auth }) {
+
+
+    const data = request.only(["title", "subtitle", "type", "likes", "content"])
 
     const contents = await Content.create(data)
 
@@ -52,6 +54,11 @@ class ContentController {
       error: false,
       request: contents
     })
+    /* else{
+      return response.status(401).json({
+        error: true
+      })
+    } */
   }
 
   /**
@@ -63,7 +70,8 @@ class ContentController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params }) {
+  async show({ params }) {
+
     const contents = await Content.findOrFail(params.id)
     await contents.load("images")
 
@@ -88,8 +96,34 @@ class ContentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+
+  async update({ params, request, response }) {
+    const content = await Content.findOrFail(params.id)
+    if (content) {
+      const contentMerged = content.merge(request.body)
+
+      if (await content.save()) {
+        return response.json({
+          error: false
+        })
+      }
+
+      return response.status(400).json({
+        error: true,
+        message: 'You must change any field'
+      })
+    }
+
+    return response.status(400).json({
+      error:true,
+      message: 'You solicitation was not completed'
+    })
+
+
+
   }
+
+
 
   /**
    * Delete a content with id.
@@ -99,7 +133,8 @@ class ContentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params, request, response }) {
+
   }
 }
 

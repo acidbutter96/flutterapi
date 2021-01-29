@@ -1,15 +1,19 @@
 'use strict'
 
+const User = require("../../Models/User")
+
 class SessionController {
     async create({request,auth}){
         const {email, password} = request.all()
-        const token = await auth.attempt(email,password)
+        const token = await auth
+            .attempt(email,password)
 
         return token
     }
 
-    async destrou({request,auth}){
-        return 'none'
+    async destroy({request,auth}){
+        const token = await auth.logout()
+        return token
     }
 }
 
