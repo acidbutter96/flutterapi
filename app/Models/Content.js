@@ -5,8 +5,8 @@ const Model = use('Model')
 
 class Content extends Model {
 
-    image (){
-        return this.hasOne("App/Models/Image")
+    images (){
+        return this.hasMany("App/Models/Image")
     }
 
 }

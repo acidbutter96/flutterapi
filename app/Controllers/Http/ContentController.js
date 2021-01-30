@@ -114,7 +114,7 @@ class ContentController {
     }
 
     return response.status(400).json({
-      error:true,
+      error: true,
       message: 'You solicitation was not completed'
     })
 
@@ -134,6 +134,30 @@ class ContentController {
    */
   async destroy({ params, request, response }) {
 
+  }
+
+  async index_img({ request, response, params }) {
+    const oneID = params.id || false
+
+    if (oneID) {
+      const content = await Content.query()
+        .with('images')
+        .where('id', params.id)
+        .fetch()
+      if(content){
+        return response.json({
+          error: false,
+          data: content
+        })
+      }
+
+      return response.status(400).json({
+        error: true,
+        message: 'Not founded images related to this content id'
+      })
+    } else {
+      return response.send('falsiane')
+    }
   }
 }
 
