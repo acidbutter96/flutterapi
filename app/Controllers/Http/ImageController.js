@@ -116,6 +116,64 @@ class ImageController {
             message: 'All files are successfully removed'
         })
     }
+
+    async update({ request, params, response }) {
+        const imageID = params.id
+        const findImg = await Image.query()
+            .where('id', params.id)
+            .fetch()
+
+        const originalPath = findImg.toJSON()[0].path
+
+        if (typeof originalPath == 'string') {
+            const imageUploaded = request.file('image', {
+                types: ['image'],
+                maxSize: '5mb'
+            })
+
+            const name = `${new Date().getTime()}_${Math.round((Math.random()) * 100)}.${imageUploaded.subtype}`
+
+            await imageUploaded.move(Helpers.publicPath('uploads/contents/'), {
+                name: name,
+                overwrite: true
+            })
+            const path = `${name}`
+
+            if (!imageUploaded.moved()) {
+                return response.status(400).json({
+                    error: true,
+                    message: imageUploaded.error()
+                })
+            }
+
+            const imgDb = await Image.query()
+                .where('id', params.id)
+                .update({ path: path })
+
+            if (imgDb == 1) {
+                fs.unlink(Helpers.publicPath(`uploads/contents/${originalPath}`), async (err) => {
+                    if (err) {
+                        const rePut = await Image.query()
+                            .where('id', params.id)
+                            .update({ path: originalPath })
+                        return response.status(400).send(err)
+                    }
+                })
+
+                return response.json({
+                    error: false,
+                    message: 'Image updated!',
+                    imgDb: imgDb
+                })
+            }
+
+            if (imgDb) {
+
+            }
+
+            return response.send(imgDb)
+        }
+    }
 }
 
 module.exports = ImageController
