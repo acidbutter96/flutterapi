@@ -40,7 +40,6 @@ class ImageController {
                     message: 'Image uploaded!',
                     imgDb: imgDb
                 })
-
             }
 
             return response.send(imgDb)
@@ -58,14 +57,64 @@ class ImageController {
             .where('path', path)
             .delete()
 
-        fs.unlink(Helpers.publicPath(`uploads/contents/${path}`), (err) => {
-            if (err) {
-                return response.status(400).send(err)
-            }
-            return response.send('apagada')
+        console.log(imgId == 1)
+        if (imgId == 1) {
+            fs.unlink(Helpers.publicPath(`uploads/contents/${path}`), (err) => {
+                if (err) {
+                    return response.status(400).send(err)
+                }
+            })
+            return response.json({
+                error: false,
+                message: 'Image was deleted'
+            })
+        }
 
+        return response.status(400).json({
+            error: true,
+            message: 'Image can not be deleted at the moment, try again in few minutes'
+        })
+    }
+
+    async searchNdestroy({ params, response }) {
+        const contentId = params.id
+        const relatedImg = await Image.query()
+            .where('content_id', contentId)
+            .fetch()
+
+        var responsed = []
+        var notResponsed = []
+
+        relatedImg.toJSON().map(async (item) => {
+            fs.unlink(Helpers.publicPath(`uploads/contents/${item.path}`), (err) => {
+                return response.status(400).json({
+                    error: true,
+                    message: `Error deleting the ${item.path} file, try again in few minutes`
+                })
+            })
+
+            const deletedImg = await Image.query()
+                .where('path', item.path)
+                .delete()
+
+            if (deletedImg == 1) {
+                responsed.push(item.path)
+            } else {
+                notResponsed.push(item.path)
+            }
         })
 
+        if (notResponsed.length != 0) {
+            return response.json({
+                error: true,
+                message: 'Not all files are removed',
+                errFiles: notResponsed
+            })
+        }
+        return response.json({
+            error: false,
+            message: 'All files are successfully removed'
+        })
     }
 }
 

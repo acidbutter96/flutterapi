@@ -1,5 +1,7 @@
 'use strict'
 
+const { put } = require('@adonisjs/framework/src/Route/Manager')
+
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -53,5 +55,9 @@ Route.get('v1/contents/images/:filename', 'ImageController.show')
 Route.get('v1/content/image/:id?', 'ContentController.index_img')
   .middleware('auth')
 Route.delete('v1/contents/image/:filename', 'ImageController.destroy')
+  .middleware('auth')
+Route.delete('v1/contents/images/:id', 'ImageController.searchNdestroy')
+  .middleware('auth')
+Route.put('v1/contents/image/:id', 'ImageController.update')
   .middleware('auth')
 
