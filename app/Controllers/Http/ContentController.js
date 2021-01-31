@@ -19,10 +19,25 @@ class ContentController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index() {
-    const contents = await Content.all()
+  async index({params, response}) {
+    if(params.type == null){
+      const contents = await Content.all()
+      return response.json({
+        error: false,
+        content: contents
+      })
+    }
 
-    return contents
+    console.log(params.content)
+
+    const contents = await Content.query()
+      .where('type', params.type)
+      .fetch()
+
+    return response.json({
+      error: false,
+      content: contents
+    })
   }
 
   /**

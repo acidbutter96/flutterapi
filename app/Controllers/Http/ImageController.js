@@ -167,11 +167,10 @@ class ImageController {
                 })
             }
 
-            if (imgDb) {
-
-            }
-
-            return response.send(imgDb)
+            return response.status(400).json({
+                error: true,
+                message: 'An error happened'
+            })
         }
     }
 }
